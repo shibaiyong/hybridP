@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+
+	</head>
+	<body>
+		<!-- 主界面菜单同时移动 -->
+		<!-- 侧滑导航根容器 -->
+		<div class="mui-off-canvas-wrap mui-draggable">
+			<!-- 主页面容器 -->
+			<div class="mui-inner-wrap">
+
+				<!-- 主页面标题 -->
+				<header class="mui-bar mui-bar-nav">
+					<a class="mui-icon mui-action-menu mui-icon-bars mui-pull-left" href="#offCanvasSide"></a>
+					<h1 class="mui-title">标题</h1>
+				</header>
+				<nav class="mui-bar mui-bar-tab">
+					<a class="mui-tab-item mui-active index">
+						<span class="mui-icon mui-icon-home"></span>
+						<span class="mui-tab-label">首页</span>
+					</a>
+					<!-- <a class="mui-tab-item phone">
+						<span class="mui-icon mui-icon-phone"></span>
+						<span class="mui-tab-label">电话</span>
+					</a> -->
+					<a class="mui-tab-item email">
+						<span class="mui-icon mui-icon-email"></span>
+						<span class="mui-tab-label">邮件</span>
+					</a>
+					<a class="mui-tab-item">
+						<span class="mui-icon mui-icon-gear"></span>
+						<span class="mui-tab-label">设置</span>
+					</a>
+				</nav>
+				<!-- 主页面内容容器 -->
+				<div class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<!-- 主界面具体展示内容 -->
+						
+					</div>
+				</div>
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" charset="utf-8">
+	mui.init({
+		preloadPages: [{
+			url: '../mail/mail.html',
+			id: 'mail',
+			styles: {
+				top: '0px',
+				bottom: '45px'
+			}
+		}],
+		subpages:[{
+			url: '../phone/phone.html',
+			id: 'phone',
+			styles: {
+				top: '45px',
+				bottom: '45px'
+			}
+		}]
+	})
+	mui('.mui-bar-tab').on('tap', '.email', function() {
+		mui.openWindow({
+			id: 'mail',
+			url: '../mail/mail.html'
+		});
+	})
+// 	mui('.mui-bar-tab').on('tap', '.phone', function() {
+// 		//打开新闻详情
+// 		mui.openWindow({
+// 			id: 'phone',
+// 			url: '../phone/phone.html',
+// 			styles: {
+// 				top: '0px',
+// 				bottom: '45px'
+// 			},
+// 			show: {
+// 				autoShow: true, //页面loaded事件发生后自动显示，默认为true
+// 				aniShow: 'slide-in-right', //页面显示动画，默认为”slide-in-right“；
+// 				duration: '100' //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+// 			},
+// 			createNew: false,
+// 			waiting: {
+// 				autoShow: true, //自动显示等待框，默认为true
+// 				title: '正在加载...', //等待对话框上显示的提示内容
+// 				options: {
+// 					//等待框背景区域宽度，默认根据内容自动计算合适宽度
+// 				}
+// 			}
+// 		});
+// 	})
+	mui('.mui-bar-tab').on('tap', '.index', function() {
+		mui.openWindow({
+			id: 'index',
+			url: 'index.html',
+			subpages:[{
+				url: '../phone/phone.html',
+				id: 'phone',
+				styles: {
+					top: '45px',
+					bottom: '45px'
+				}
+			}]
+		});
+	})
+	window.addEventListener('getDetail',function(event){
+		alert(JSON.stringify(event.detail))
+		//双webview下的滚动回顶部有问题,出现白屏注意找原因;
+		//
+		mui.scrollTo(0,1000);
+	})
+</script>

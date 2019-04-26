@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+
+	</head>
+	<body>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell">电话：111111111</li>
+						<li class="mui-table-view-cell">电话：111111111</li>
+						<li class="mui-table-view-cell">电话：111111111</li>
+						<li class="mui-table-view-cell">电话：111111111</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" charset="utf-8">
+	var page = 0;
+	var size = 5;
+	mui.init({
+		pullRefresh: {
+			container: '#refreshContainer', //待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+			up: {
+				//height: 50, //可选.默认50.触发上拉加载拖动距离
+				//auto: false, //可选,默认false.自动上拉加载一次
+				contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+				contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+				callback:pullUp //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			},
+			down:{
+				callback:pullDown
+			}
+		}
+	})
+	function pullUp() {
+		var that = this;
+		page++;
+		//不管有没有数据都需要调用endPullupToRefresh,否则,上拉加载只会执行一次.
+		mui.ajax('http://ons.me/tools/dropload/json.php?page=' + page + '&size=' + size, {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'get', //HTTP请求类型
+			success: function(data) {
+				var result = '';
+				var arrLen = data.length;
+				if (arrLen > 0) {
+					for (var i = 0; i < arrLen; i++) {
+						var _ul = document.createElement('ul');
+						_ul.setAttribute('class', 'mui-table-view');
+						_ul.setAttribute('id', data[i].id);
+						for (var j in data[i]) {
+							var _li = document.createElement('li');
+							var textNode = document.createTextNode(data[i][j]);
+							_li.setAttribute('class', 'mui-table-view-cell');
+							_li.appendChild(textNode);
+							_ul.appendChild(_li);
+						}
+						document.querySelector('.mui-scroll').appendChild(_ul);
+						that.endPullupToRefresh(false);
+					}
+				}else{
+					that.endPullupToRefresh(true);
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+			}
+		});
+	}
+	function pullDown(){
+		alert();
+	}
+	mui('body').on('tap', '.mui-table-view', function() {
+		var id = this.getAttribute('id');
+		var index = plus.webview.getLaunchWebview();
+		//回到列表页顶端,要在子页面中调用滚动的方法.
+		mui.scrollTo(0,500);
+		mui.fire(index, 'getDetail', {
+			id: id
+		});
+	})
+
+</script>
+
+	
