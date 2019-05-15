@@ -8,10 +8,8 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<style>
 			.mui-bar-nav ~ .mui-content .mui-pull-top-pocket{
-
-           top: 300px !important;
-
-         }
+        top: 300px !important;
+      }
 		</style>
 	</head>
 	<body>
@@ -39,9 +37,9 @@
 						<span class="mui-icon mui-icon-email"></span>
 						<span class="mui-tab-label">邮件</span>
 					</a>
-					<a class="mui-tab-item">
+					<a class="mui-tab-item setting">
 						<span class="mui-icon mui-icon-gear"></span>
-						<span class="mui-tab-label">设置</span>
+						<span class="mui-tab-label">mui</span>
 					</a>
 				</nav>
 				<!-- 主页面内容容器 -->
@@ -49,6 +47,7 @@
 					<div class="mui-scroll">
 						<!-- 主界面具体展示内容 -->
 						<ul>
+							<li><a class="aLinkTo" href="http://www.baidu.com">利用a标签跳转到百度</a></li>
 							<li><button type="button" class="mui-btn mui-btn-warning mui-btn-outlined paizhao">拍照</button></li>
 							<li><button type="button" class="mui-btn mui-btn-warning mui-btn-outlined erweima">创建扫码控件</button></li>
 							<li><button type="button" class="mui-btn mui-btn-warning mui-btn-outlined dakaiwailianjie">打开外链接</button></li>
@@ -92,6 +91,13 @@
 			url: '../mail/mail.html'
 		});
 	})
+	mui('.mui-bar-tab').on('tap', '.setting', function() {
+		mui.openWindow({
+			id: 'setting',
+			url: '../setting/setting.html'
+		});
+	})
+	
 	// 	mui('.mui-bar-tab').on('tap', '.phone', function() {
 	// 		//打开新闻详情
 	// 		mui.openWindow({
@@ -183,7 +189,6 @@
 
 	})
 	//打开外链接
-	
 	mui('ul').on('tap', '.dakaiwailianjie', function() {
 		mui.openWindow({
 			id: 'list',
@@ -194,4 +199,9 @@
 			}
 		});
 	})
+	//a标签打开新页面
+	mui('ul').on('tap', '.aLinkTo', function() {
+		window.location.href = this.href;
+	})
+	
 </script>
